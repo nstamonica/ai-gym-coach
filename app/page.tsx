@@ -3,9 +3,9 @@ import { useState, ChangeEvent } from "react";
 
 // This defines the structure of the data we expect from our API
 interface AnalysisResult {
-  message: string;
-  filename: string;
-  status: string;
+  exercise: string;
+  grade: string;
+  feedback: string[];
 }
 
 export default function Home() {
@@ -81,15 +81,24 @@ export default function Home() {
         </div>
 
         {result && (
-          <div className="bg-slate-900 border border-emerald-500/30 p-6 rounded-2xl animate-in fade-in slide-in-from-bottom-4 duration-500">
-            <h2 className="text-emerald-400 font-bold text-xl mb-4">Phase 1 Success!</h2>
-            <div className="bg-black/50 p-4 rounded-lg font-mono text-sm text-emerald-200">
-              <p>Filename: {result.filename}</p>
-              <p>Message: {result.message}</p>
-              <p>Status: {result.status}</p>
-            </div>
-          </div>
-        )}
+  <div className="bg-slate-900 border border-blue-500/50 p-8 rounded-2xl shadow-xl space-y-4">
+    <div className="flex justify-between items-center">
+      <h2 className="text-2xl font-bold text-white">{result.exercise}</h2>
+      <span className="text-4xl font-black p-4 rounded-lg bg-blue-600 text-white">
+        {result.grade}
+      </span>
+    </div>
+    
+    <div className="space-y-2">
+      <h3 className="text-blue-400 font-semibold uppercase tracking-wider text-sm">Coach's Tips</h3>
+      <ul className="list-disc list-inside text-slate-300 space-y-2">
+        {result.feedback.map((tip, index) => (
+          <li key={index}>{tip}</li>
+        ))}
+      </ul>
+    </div>
+  </div>
+)}
       </div>
     </main>
   );
