@@ -13,11 +13,11 @@ export function GradeChange({ grade, previous, linkPrevious = true }: { grade: G
       ? { Icon: ArrowUpRight, tone: "border-emerald-500/30 bg-emerald-500/10 text-emerald-200", text: `Up from ${previous.grade}` }
       : change < 0
         ? { Icon: ArrowDownRight, tone: "border-orange-500/30 bg-orange-500/10 text-orange-200", text: `Down from ${previous.grade}` }
-        : { Icon: Equal, tone: "border-slate-600 bg-slate-800/60 text-slate-200", text: `Same as last time (${previous.grade})` };
+        : { Icon: Equal, tone: "border-iron-700 bg-iron-800/60 text-iron-200", text: `Same as last time (${previous.grade})` };
 
   const date = <LocalDate iso={previous.createdAt} format="short" />;
   return (
-    <p className={cx("inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-sm font-medium", tone)}>
+    <p className={cx("inline-flex items-center gap-1.5 rounded-md border px-2.5 py-1 text-sm font-medium", tone)}>
       <Icon className="size-4" aria-hidden />
       <span>
         {text} ·{" "}

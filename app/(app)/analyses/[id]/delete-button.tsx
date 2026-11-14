@@ -21,7 +21,7 @@ export function DeleteAnalysisButton({ id }: { id: string }) {
   }
 
   return (
-    <div role="alertdialog" aria-label="Confirm delete" className="space-y-3 rounded-2xl border border-red-500/30 bg-red-500/10 p-4">
+    <div role="alertdialog" aria-label="Confirm delete" className="space-y-3 rounded-lg border border-red-500/30 bg-red-500/10 p-4">
       <p className="text-sm text-red-100">Delete this analysis? This can&apos;t be undone.</p>
       <div className="flex gap-2">
         <Button variant="secondary" size="sm" className="flex-1" onClick={() => setConfirming(false)} disabled={pending} autoFocus>

@@ -44,14 +44,14 @@ export function ShareControl({ id, initialToken }: { id: string; initialToken: s
   }
 
   return (
-    <section className="space-y-3 rounded-2xl border border-white/10 bg-[var(--surface-card)] p-5">
+    <section className="space-y-3 rounded-lg border border-iron-800 bg-iron-900 p-5">
       <div className="flex items-center justify-between gap-3">
         <div>
-          <h2 id={labelId} className="flex items-center gap-2 text-sm font-semibold text-white">
-            <Link2 className="size-4 text-slate-400" aria-hidden />
+          <h2 id={labelId} className="label-caps flex items-center gap-2 text-iron-200">
+            <Link2 className="size-4 text-iron-400" aria-hidden />
             Share link
           </h2>
-          <p className="mt-0.5 text-sm text-slate-400">
+          <p className="mt-1 text-sm text-iron-400">
             {shared ? "Anyone with the link can view this review." : "Only you can see this review."}
           </p>
         </div>
@@ -63,12 +63,15 @@ export function ShareControl({ id, initialToken }: { id: string; initialToken: s
           onClick={toggle}
           disabled={pending}
           className={cx(
-            "relative h-6 w-11 shrink-0 rounded-full transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-400 disabled:opacity-60",
-            shared ? "bg-blue-600" : "bg-slate-700",
+            "relative h-6 w-11 shrink-0 rounded-full transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-iron-100 disabled:opacity-60",
+            shared ? "bg-iron-100" : "bg-iron-700",
           )}
         >
           <span
-            className={cx("absolute top-0.5 left-0.5 size-5 rounded-full bg-white shadow transition", shared && "translate-x-5")}
+            className={cx(
+              "absolute top-0.5 left-0.5 size-5 rounded-full shadow transition",
+              shared ? "translate-x-5 bg-iron-950" : "bg-iron-200",
+            )}
           />
         </button>
       </div>
@@ -80,12 +83,12 @@ export function ShareControl({ id, initialToken }: { id: string; initialToken: s
             value={url}
             aria-label="Share link"
             onFocus={(e) => e.currentTarget.select()}
-            className="h-9 min-w-0 flex-1 rounded-lg border border-slate-700 bg-slate-950/60 px-2.5 text-sm text-slate-300"
+            className="h-9 min-w-0 flex-1 rounded-md border border-iron-700 bg-iron-950/70 px-2.5 text-sm text-iron-300 focus:border-iron-300 focus:outline-none"
           />
           <button
             type="button"
             onClick={copy}
-            className="inline-flex h-9 items-center gap-1.5 rounded-lg border border-slate-700 px-3 text-sm font-medium text-slate-200 hover:border-slate-500"
+            className="inline-flex h-9 items-center gap-1.5 rounded-md border border-iron-700 px-3 text-sm font-semibold text-iron-100 transition hover:border-iron-500 hover:bg-iron-800/60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-iron-100"
           >
             {copied ? <Check className="size-4 text-emerald-400" aria-hidden /> : <Copy className="size-4" aria-hidden />}
             {copied ? "Copied" : "Copy"}
@@ -93,7 +96,7 @@ export function ShareControl({ id, initialToken }: { id: string; initialToken: s
         </div>
       )}
       {shared && (
-        <p className="text-xs text-slate-400">Your notes stay private. Turning sharing off breaks the link for good.</p>
+        <p className="text-xs text-iron-400">Your notes stay private. Turning sharing off breaks the link for good.</p>
       )}
       {error && (
         <p role="alert" className="text-sm text-red-300">

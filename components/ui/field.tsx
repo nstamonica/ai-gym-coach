@@ -2,8 +2,8 @@ import { useId, type InputHTMLAttributes, type ReactNode, type TextareaHTMLAttri
 import { cx } from "@/lib/cx";
 
 const CONTROL =
-  "w-full rounded-xl border border-slate-700 bg-slate-950/60 px-3.5 text-slate-100 placeholder:text-slate-500 transition " +
-  "focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/30 disabled:opacity-60";
+  "w-full rounded-md border border-iron-700 bg-iron-950/60 px-3.5 text-iron-100 placeholder:text-iron-500 transition " +
+  "focus:border-iron-300 focus:outline-none focus:ring-2 focus:ring-iron-100/15 disabled:opacity-60";
 
 interface FieldProps {
   label: string;
@@ -27,7 +27,7 @@ export function TextField({
   return (
     <div className={cx("space-y-1.5", className)}>
       <div className="flex items-baseline justify-between gap-3">
-        <label htmlFor={id} className="text-sm font-medium text-slate-200">
+        <label htmlFor={id} className="text-sm font-medium text-iron-200">
           {label}
         </label>
         {aside}
@@ -57,7 +57,7 @@ export function TextAreaField({
   return (
     <div className={cx("space-y-1.5", className)}>
       <div className="flex items-baseline justify-between gap-3">
-        <label htmlFor={id} className="text-sm font-medium text-slate-200">
+        <label htmlFor={id} className="text-sm font-medium text-iron-200">
           {label}
         </label>
         {aside}
@@ -84,7 +84,7 @@ function FieldMessage({ id, hint, error }: { id: string; hint?: ReactNode; error
   }
   if (hint) {
     return (
-      <p id={`${id}-hint`} className="text-sm text-slate-400">
+      <p id={`${id}-hint`} className="text-sm text-iron-400">
         {hint}
       </p>
     );
@@ -98,7 +98,7 @@ export function FormMessage({ tone, children }: { tone: "error" | "success"; chi
     <p
       role={tone === "error" ? "alert" : "status"}
       className={cx(
-        "rounded-xl border px-4 py-3 text-sm",
+        "rounded-md border px-4 py-3 text-sm",
         tone === "error"
           ? "border-red-500/40 bg-red-500/10 text-red-200"
           : "border-emerald-500/40 bg-emerald-500/10 text-emerald-200",

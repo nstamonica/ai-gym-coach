@@ -18,9 +18,9 @@ export default async function SignUpPage({ searchParams }: { searchParams: Promi
   return (
     <AuthCard title="Create your account" subtitle="Free. Your form checks are saved so you can track your progress.">
       <SignUpForm next={next} providers={enabledSocialProviders} />
-      <p className="mt-6 text-center text-sm text-slate-400">
+      <p className="mt-6 text-center text-sm text-iron-400">
         Already have an account?{" "}
-        <Link href={signInHref} className="font-semibold text-blue-300 hover:text-blue-200">
+        <Link href={signInHref} className="font-semibold text-iron-50 underline decoration-iron-600 underline-offset-4 transition hover:decoration-iron-50">
           Sign in
         </Link>
       </p>

@@ -19,8 +19,8 @@ export default async function ResetPasswordPage({
     return (
       <AuthCard title="This link doesn't work">
         <FormMessage tone="error">This reset link is invalid or has expired.</FormMessage>
-        <p className="mt-6 text-center text-sm text-slate-400">
-          <Link href="/forgot-password" className="font-semibold text-blue-300 hover:text-blue-200">
+        <p className="mt-6 text-center text-sm text-iron-400">
+          <Link href="/forgot-password" className="font-semibold text-iron-50 underline decoration-iron-600 underline-offset-4 transition hover:decoration-iron-50">
             Request a new link
           </Link>
         </p>

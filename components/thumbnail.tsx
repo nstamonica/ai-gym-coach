@@ -1,25 +1,42 @@
-import { Dumbbell } from "lucide-react";
+import { VideoOff } from "lucide-react";
 import { cx } from "@/lib/cx";
 
-/** The saved frame for an analysis, or a placeholder. `token` is for share links. */
+/**
+ * The saved frame for an analysis. Without one, a tile with the lift's gym
+ * shorthand ("SQ", "DL") stands in. `token` is for share links.
+ */
 export function Thumbnail({
   id,
   hasThumbnail,
+  abbreviation,
   token,
   alt = "",
   className,
 }: {
   id: string;
   hasThumbnail: boolean;
+  abbreviation?: string;
   token?: string;
   alt?: string;
   className?: string;
 }) {
-  const box = cx("overflow-hidden bg-slate-800/70", className);
+  const box = cx("overflow-hidden bg-iron-800", className);
   if (!hasThumbnail) {
     return (
-      <div className={cx(box, "grid place-items-center text-slate-500")} aria-hidden>
-        <Dumbbell className="size-1/3 max-h-10 max-w-10" />
+      <div
+        className={cx(
+          box,
+          "grid place-items-center",
+        )}
+        aria-hidden
+      >
+        {abbreviation ? (
+          <span className="font-display text-2xl leading-none font-bold tracking-wide text-iron-300 uppercase">
+            {abbreviation}
+          </span>
+        ) : (
+          <VideoOff className="size-6 text-iron-500" />
+        )}
       </div>
     );
   }

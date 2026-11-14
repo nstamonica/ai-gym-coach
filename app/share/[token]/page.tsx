@@ -41,26 +41,27 @@ export default async function SharedAnalysisPage({ params }: { params: Promise<{
       </header>
 
       <main className="mx-auto w-full max-w-3xl flex-1 space-y-6 px-4 py-8">
-        <p className="text-sm text-slate-400">
-          {shared.ownerName ? `${shared.ownerName}'s` : "A"} form check · <LocalDate iso={shared.createdAt} />
-        </p>
-        <article className="rounded-2xl border border-white/10 bg-[var(--surface-card)] p-5 sm:p-8">
+        <article className="rounded-lg border border-iron-800 bg-iron-900 p-5 sm:p-8">
           <AnalysisReport
             analysis={shared}
             showNotes={false}
             headingLevel="h1"
             media={
               shared.hasThumbnail && (
-                <Thumbnail id={shared.id} hasThumbnail token={token} className="aspect-video w-full rounded-xl" />
+                <Thumbnail id={shared.id} hasThumbnail token={token} className="aspect-video w-full rounded-md" />
               )
             }
           />
+          <p className="mt-8 border-t border-iron-800 pt-5 text-sm text-iron-400">
+            {shared.ownerName ? `${shared.ownerName}'s` : "A"} form check, reviewed by AI Gym Coach on{" "}
+            <LocalDate iso={shared.createdAt} />.
+          </p>
         </article>
 
-        <section className="flex flex-col items-start gap-4 rounded-2xl border border-white/10 bg-gradient-to-br from-blue-600/15 to-emerald-600/10 p-6 sm:flex-row sm:items-center sm:justify-between">
+        <section className="flex flex-col items-start gap-4 rounded-lg border border-iron-800 bg-iron-900/60 p-6 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h2 className="font-semibold text-white">Want a review of your own lifts?</h2>
-            <p className="text-slate-400">Upload a clip and get a grade and corrections in about a minute.</p>
+            <h2 className="font-display text-2xl font-bold tracking-tight text-iron-50 uppercase">Want a review of your own lifts?</h2>
+            <p className="text-iron-400">Upload a clip and get a grade and corrections in about a minute.</p>
           </div>
           <Link href="/sign-up" className={buttonClasses()}>
             Get started free

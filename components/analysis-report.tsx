@@ -15,6 +15,7 @@ export function AnalysisReport({
   showNotes = true,
   linkPrevious = true,
   headingLevel = "h2",
+  revealGrade = false,
 }: {
   analysis: ReportData;
   previous?: PreviousResult | null;
@@ -23,17 +24,29 @@ export function AnalysisReport({
   showNotes?: boolean;
   linkPrevious?: boolean;
   headingLevel?: "h1" | "h2";
+  /** Animate the grade in (for a review that just arrived). */
+  revealGrade?: boolean;
 }) {
   const { feedback } = analysis;
   const Heading = headingLevel;
+  // Section headings sit one level below the title, so the outline never skips a level.
+  const SubHeading = headingLevel === "h1" ? "h2" : "h3";
+  // "Back squat · Excellent form": the lift it's tracked under (when the model's name
+  // differs from it) and what the grade means.
+  const meta = [
+    analysis.exercise && analysis.exercise.toLowerCase() !== analysis.exerciseLabel.toLowerCase() ? analysis.exerciseLabel : null,
+    analysis.grade ? `${GRADE_LABELS[analysis.grade]} form` : null,
+  ]
+    .filter(Boolean)
+    .join(" · ");
 
   if (!analysis.isExercise) {
     return (
       <div className="space-y-6">
         {media}
         <div className="space-y-2 text-center">
-          <Heading className="text-xl font-bold text-white">No exercise detected</Heading>
-          <p className="text-slate-400">
+          <Heading className="font-display text-3xl font-bold tracking-tight text-iron-50 uppercase">No exercise detected</Heading>
+          <p className="text-iron-400">
             {feedback.summary ||
               "We couldn't find anyone exercising in this clip. Try a video that shows your whole body during a set."}
           </p>
@@ -43,26 +56,26 @@ export function AnalysisReport({
   }
 
   return (
-    <div className="space-y-7">
+    <div className="space-y-8">
       {media}
 
-      <div className="flex items-start justify-between gap-4">
-        <div className="min-w-0 space-y-1">
-          <p className="text-xs font-semibold tracking-wider text-slate-400 uppercase">{analysis.exerciseLabel}</p>
-          <Heading className="text-2xl font-bold text-balance text-white sm:text-3xl">
-            {analysis.exercise || analysis.exerciseLabel}
-          </Heading>
-          {analysis.grade && <p className="text-sm text-slate-400">{GRADE_LABELS[analysis.grade]} form</p>}
+      <div className="space-y-4">
+        <div className="flex items-start justify-between gap-4">
+          <div className="min-w-0 space-y-2">
+            <Heading className="font-display text-3xl leading-[0.95] font-bold tracking-tight text-balance text-iron-50 uppercase sm:text-4xl">
+              {analysis.exercise || analysis.exerciseLabel}
+            </Heading>
+            {meta && <p className="text-sm text-iron-400">{meta}</p>}
+          </div>
+          <GradeBadge grade={analysis.grade} size="lg" reveal={revealGrade} />
         </div>
-        <GradeBadge grade={analysis.grade} size="lg" />
+        {previous && analysis.grade && <GradeChange grade={analysis.grade} previous={previous} linkPrevious={linkPrevious} />}
       </div>
 
-      {previous && analysis.grade && <GradeChange grade={analysis.grade} previous={previous} linkPrevious={linkPrevious} />}
-
-      {feedback.summary && <p className="text-lg leading-relaxed text-pretty text-slate-200">{feedback.summary}</p>}
+      {feedback.summary && <p className="text-lg leading-relaxed text-pretty text-iron-200">{feedback.summary}</p>}
 
       {feedback.safetyWarning && (
-        <div role="alert" className="flex gap-3 rounded-xl border border-red-500/40 bg-red-500/10 p-4 text-red-100">
+        <div role="alert" className="flex gap-3 rounded-md border border-red-400/50 bg-red-500/10 p-4 text-red-100">
           <ShieldAlert className="mt-0.5 size-5 shrink-0 text-red-300" aria-hidden />
           <p>
             <span className="font-semibold">Safety: </span>
@@ -72,27 +85,28 @@ export function AnalysisReport({
       )}
 
       {feedback.progressNote && (
-        <section className="flex gap-3 rounded-xl border border-blue-500/30 bg-blue-500/10 p-4">
-          <TrendingUp className="mt-0.5 size-5 shrink-0 text-blue-300" aria-hidden />
+        <section className="flex gap-3">
+          <TrendingUp className="mt-0.5 size-5 shrink-0 text-iron-400" aria-hidden />
           <div>
-            <h3 className="font-semibold text-blue-100">Since last time</h3>
-            <p className="mt-0.5 text-slate-300">{feedback.progressNote}</p>
+            <SubHeading className="label-caps text-iron-300">Since last time</SubHeading>
+            <p className="mt-1 text-iron-200">{feedback.progressNote}</p>
           </div>
         </section>
       )}
 
       {feedback.tips.length > 0 && (
-        <section className="space-y-4">
-          <h3 className="text-sm font-semibold tracking-wider text-blue-300 uppercase">How to improve</h3>
-          <ol className="space-y-4">
+        <section>
+          {/* Numbered because the order is the priority: fix the first one first. */}
+          <SubHeading className="label-caps text-iron-400">How to improve, most important first</SubHeading>
+          <ol className="mt-3 divide-y divide-iron-800 border-y border-iron-800">
             {feedback.tips.map((tip, i) => (
-              <li key={i} className="flex gap-3">
-                <span className="grid size-7 shrink-0 place-items-center rounded-full bg-blue-600 text-sm font-bold text-white">
+              <li key={i} className="flex gap-4 py-4">
+                <span className="w-5 shrink-0 font-display text-3xl leading-none font-bold text-iron-500 tabular-nums" aria-hidden>
                   {i + 1}
                 </span>
                 <div>
-                  <p className="font-semibold text-white">{tip.title}</p>
-                  {tip.detail && <p className="mt-0.5 text-slate-400">{tip.detail}</p>}
+                  <p className="font-semibold text-iron-50">{tip.title}</p>
+                  {tip.detail && <p className="mt-1 text-iron-400">{tip.detail}</p>}
                 </div>
               </li>
             ))}
@@ -101,11 +115,11 @@ export function AnalysisReport({
       )}
 
       {feedback.strengths.length > 0 && (
-        <section className="space-y-3">
-          <h3 className="text-sm font-semibold tracking-wider text-emerald-300 uppercase">What you&apos;re doing well</h3>
-          <ul className="space-y-2">
+        <section>
+          <SubHeading className="label-caps text-iron-400">What you&apos;re doing well</SubHeading>
+          <ul className="mt-3 space-y-2">
             {feedback.strengths.map((strength, i) => (
-              <li key={i} className="flex gap-2.5 text-slate-300">
+              <li key={i} className="flex gap-2.5 text-iron-200">
                 <Check className="mt-0.5 size-5 shrink-0 text-emerald-400" aria-hidden />
                 {strength}
               </li>
@@ -115,21 +129,21 @@ export function AnalysisReport({
       )}
 
       {(feedback.cameraTip || (showNotes && analysis.notes)) && (
-        <div className="space-y-3 border-t border-slate-800 pt-5 text-sm">
+        <div className="space-y-3 border-t border-iron-800 pt-5 text-sm">
           {feedback.cameraTip && (
-            <p className="flex gap-2.5 text-slate-400">
+            <p className="flex gap-2.5 text-iron-400">
               <Camera className="mt-0.5 size-4 shrink-0" aria-hidden />
               <span>
-                <span className="font-semibold text-slate-300">Filming tip: </span>
+                <span className="font-semibold text-iron-300">Filming tip: </span>
                 {feedback.cameraTip}
               </span>
             </p>
           )}
           {showNotes && analysis.notes && (
-            <p className="flex gap-2.5 text-slate-400">
+            <p className="flex gap-2.5 text-iron-400">
               <MessageSquareText className="mt-0.5 size-4 shrink-0" aria-hidden />
               <span>
-                <span className="font-semibold text-slate-300">Your note: </span>
+                <span className="font-semibold text-iron-300">Your note: </span>
                 {analysis.notes}
               </span>
             </p>

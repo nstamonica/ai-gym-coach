@@ -1,20 +1,7 @@
-import {
-  ChartLine,
-  Gauge,
-  History,
-  Lock,
-  ShieldAlert,
-  Smartphone,
-  Sparkles,
-  Upload,
-  Video,
-  type LucideIcon,
-} from "lucide-react";
 import Link from "next/link";
 import { AnalysisReport } from "@/components/analysis-report";
 import { LandingNav } from "@/components/landing-nav";
 import { Logo } from "@/components/logo";
-import { SampleFrame } from "@/components/sample-frame";
 import { SiteFooter } from "@/components/site-footer";
 import { buttonClasses } from "@/components/ui/button";
 import type { AnalysisView, PreviousResult } from "@/lib/types";
@@ -52,28 +39,25 @@ const SAMPLE: Pick<AnalysisView, "isExercise" | "exercise" | "exerciseLabel" | "
 
 const SAMPLE_PREVIOUS: PreviousResult = { id: "sample", grade: "C", createdAt: "2026-10-28T17:30:00.000Z" };
 
-const STEPS: { Icon: LucideIcon; title: string; text: string }[] = [
-  { Icon: Video, title: "Film one set", text: "Side-on or at a 45° angle, with your whole body in frame." },
-  { Icon: Upload, title: "Upload it", text: "MP4, MOV or WebM up to 90 seconds, straight from your phone." },
-  { Icon: Sparkles, title: "Get coached", text: "A grade, your top three fixes and any safety warnings, in under a minute." },
+const STEPS = [
+  { title: "Film one set", text: "Side-on or at a 45° angle, with your whole body and the bar in frame." },
+  { title: "Upload it", text: "MP4, MOV or WebM up to 90 seconds, straight from your phone." },
+  { title: "Get coached", text: "A grade, your top three fixes and any safety warnings, in about a minute." },
 ];
 
-const FEATURES: { Icon: LucideIcon; title: string; text: string }[] = [
-  { Icon: Gauge, title: "A grade, not a guess", text: "Every set gets an A–F grade and the three corrections that will help most." },
-  { Icon: ShieldAlert, title: "Safety first", text: "Anything that risks an injury is flagged before anything else." },
+const FEATURES = [
+  { title: "A grade, not a guess", text: "Every set gets an A–F grade and the three corrections that will help most." },
+  { title: "Safety first", text: "Anything that risks an injury is flagged before anything else." },
   {
-    Icon: History,
     title: "A coach that remembers",
     text: "Each review is compared with your last session of the same lift, so you know whether the fixes stuck.",
   },
-  { Icon: ChartLine, title: "Progress you can see", text: "Your dashboard charts your grade over time for every lift you film." },
-  {
-    Icon: Lock,
-    title: "Private by default",
-    text: "Videos are deleted as soon as the review is ready. Share a review only if you choose to.",
-  },
-  { Icon: Smartphone, title: "Made for your phone", text: "Film between sets and get feedback before your next one." },
+  { title: "Progress you can see", text: "Your dashboard charts your grade over time for every lift you film." },
+  { title: "Private by default", text: "Videos are deleted as soon as the review is ready. Share a review only if you choose to." },
+  { title: "Made for your phone", text: "Film between sets and get feedback before your next one." },
 ];
+
+const SECTION_TITLE = "font-display text-4xl leading-[0.95] font-bold tracking-tight text-balance text-iron-50 uppercase sm:text-5xl";
 
 export default function LandingPage() {
   return (
@@ -84,23 +68,17 @@ export default function LandingPage() {
       </header>
 
       <main className="flex-1">
-        <section className="mx-auto grid max-w-6xl items-start gap-12 px-4 pt-12 pb-20 lg:grid-cols-[1fr_minmax(0,32rem)] lg:pt-16">
-          <div className="space-y-7 lg:sticky lg:top-12 lg:pt-16">
-            <p className="inline-flex items-center gap-2 rounded-full border border-blue-500/30 bg-blue-500/10 px-3 py-1 text-sm font-medium text-blue-200">
-              <Sparkles className="size-4" aria-hidden />
-              Form feedback powered by Gemini
-            </p>
-            <h1 className="text-5xl font-extrabold tracking-tight text-balance text-white sm:text-6xl">
-              Film your set.{" "}
-              <span className="bg-gradient-to-r from-blue-400 to-emerald-400 bg-clip-text text-transparent">
-                Fix your form.
-              </span>
+        <section className="mx-auto grid max-w-6xl items-start gap-12 px-4 pt-10 pb-20 lg:grid-cols-[minmax(0,1fr)_minmax(0,30rem)] lg:gap-16 lg:pt-14">
+          <div className="lg:sticky lg:top-14 lg:pt-16">
+            <h1 className="font-display text-6xl leading-[0.86] font-bold tracking-tight uppercase sm:text-7xl md:text-8xl lg:text-7xl xl:text-8xl">
+              <span className="block text-iron-500">Film your set.</span>
+              <span className="block text-iron-50">Fix your form.</span>
             </h1>
-            <p className="max-w-xl text-lg leading-relaxed text-pretty text-slate-300">
+            <p className="mt-8 max-w-lg text-lg leading-relaxed text-pretty text-iron-300">
               Upload a short clip of your lift and get a grade, the three corrections that matter most and any safety
               warnings. Every review is saved, so you can watch your form improve lift by lift.
             </p>
-            <div className="flex flex-wrap gap-3">
+            <div className="mt-8 flex flex-wrap gap-3">
               <Link href="/sign-up" className={buttonClasses({ size: "lg" })}>
                 Get started free
               </Link>
@@ -108,61 +86,64 @@ export default function LandingPage() {
                 Sign in
               </Link>
             </div>
-            <p className="text-sm text-slate-400">Squats, deadlifts, presses, rows, pull-ups and more.</p>
+            <p className="mt-6 text-sm text-iron-400">Squats, deadlifts, presses, rows, pull-ups and more.</p>
           </div>
 
-          <div className="relative">
-            <div className="absolute -inset-6 -z-10 rounded-[2rem] bg-gradient-to-br from-blue-600/20 to-emerald-500/10 blur-2xl" aria-hidden />
-            <div className="rounded-2xl border border-white/10 bg-[var(--surface-card)] p-5 shadow-2xl shadow-black/50 sm:p-6">
-              <p className="mb-4 text-xs font-semibold tracking-wider text-slate-400 uppercase">Sample review</p>
-              <AnalysisReport analysis={SAMPLE} previous={SAMPLE_PREVIOUS} media={<SampleFrame />} linkPrevious={false} />
+          <figure>
+            <div className="rounded-lg border border-iron-800 bg-iron-900 p-5 sm:p-7">
+              <AnalysisReport analysis={SAMPLE} previous={SAMPLE_PREVIOUS} linkPrevious={false} />
             </div>
-          </div>
+            <figcaption className="mt-3 text-sm text-iron-400">
+              A sample review. Yours arrives about a minute after you upload a set.
+            </figcaption>
+          </figure>
         </section>
 
-        <section aria-labelledby="how-heading" className="border-y border-white/5 bg-slate-900/40">
-          <div className="mx-auto max-w-6xl px-4 py-16">
-            <h2 id="how-heading" className="text-center text-3xl font-bold tracking-tight text-white">
+        <section aria-labelledby="how-heading" className="border-t border-iron-800">
+          <div className="mx-auto max-w-6xl px-4 py-20">
+            <h2 id="how-heading" className={SECTION_TITLE}>
               How it works
             </h2>
-            <ol className="mt-10 grid gap-6 sm:grid-cols-3">
-              {STEPS.map(({ Icon, title, text }, i) => (
-                <li key={title} className="rounded-2xl border border-white/10 bg-[var(--surface-card)] p-6">
-                  <div className="flex items-center gap-3">
-                    <span className="grid size-10 place-items-center rounded-xl bg-blue-500/15 text-blue-300">
-                      <Icon className="size-5" aria-hidden />
-                    </span>
-                    <span className="text-sm font-semibold text-slate-400">Step {i + 1}</span>
-                  </div>
-                  <h3 className="mt-4 text-lg font-semibold text-white">{title}</h3>
-                  <p className="mt-1 text-slate-400">{text}</p>
+            <ol className="mt-12 grid gap-10 sm:grid-cols-3 sm:gap-8">
+              {STEPS.map(({ title, text }) => (
+                <li key={title} className="border-t-2 border-iron-100 pt-5">
+                  <h3 className="font-display text-3xl leading-none font-bold tracking-tight text-iron-50 uppercase">{title}</h3>
+                  <p className="mt-3 text-iron-400">{text}</p>
                 </li>
               ))}
             </ol>
           </div>
         </section>
 
-        <section aria-labelledby="features-heading" className="mx-auto max-w-6xl px-4 py-20">
-          <h2 id="features-heading" className="text-center text-3xl font-bold tracking-tight text-white">
-            Built like a coach, not a chatbot
-          </h2>
-          <div className="mt-10 grid gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
-            {FEATURES.map(({ Icon, title, text }) => (
-              <div key={title} className="flex gap-4">
-                <Icon className="mt-1 size-6 shrink-0 text-emerald-400" aria-hidden />
-                <div>
-                  <h3 className="font-semibold text-white">{title}</h3>
-                  <p className="mt-1 text-slate-400">{text}</p>
+        <section aria-labelledby="features-heading" className="border-t border-iron-800">
+          <div className="mx-auto grid max-w-6xl gap-10 px-4 py-20 lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)] lg:gap-16">
+            <div>
+              <h2 id="features-heading" className={SECTION_TITLE}>
+                Built like a coach, not a chatbot
+              </h2>
+              <p className="mt-5 text-lg text-pretty text-iron-400">
+                It grades the set, tells you what to fix first and remembers what you were working on last time.
+              </p>
+            </div>
+            <dl className="grid gap-x-10 sm:grid-cols-2">
+              {FEATURES.map(({ title, text }) => (
+                <div key={title} className="border-t border-iron-800 py-6">
+                  <dt className="font-display text-xl font-bold tracking-tight text-iron-50 uppercase">{title}</dt>
+                  <dd className="mt-1.5 text-iron-400">{text}</dd>
                 </div>
-              </div>
-            ))}
+              ))}
+            </dl>
           </div>
         </section>
 
-        <section className="mx-auto max-w-6xl px-4 pb-20">
-          <div className="flex flex-col items-center gap-6 rounded-3xl border border-white/10 bg-gradient-to-br from-blue-600/20 via-slate-900 to-emerald-600/10 px-6 py-14 text-center">
-            <h2 className="text-3xl font-bold tracking-tight text-balance text-white">Your next set could be your best one.</h2>
-            <p className="max-w-xl text-slate-300">Create a free account and get your first review in about a minute.</p>
+        <section className="border-t border-iron-800">
+          <div className="mx-auto flex max-w-6xl flex-col items-start gap-8 px-4 py-20 md:flex-row md:items-end md:justify-between">
+            <div>
+              <h2 className="max-w-2xl font-display text-5xl leading-[0.9] font-bold tracking-tight text-balance text-iron-50 uppercase sm:text-6xl">
+                Your next set could be your best one.
+              </h2>
+              <p className="mt-4 text-lg text-iron-400">Create a free account and get your first review in about a minute.</p>
+            </div>
             <Link href="/sign-up" className={buttonClasses({ size: "lg" })}>
               Analyze your form
             </Link>

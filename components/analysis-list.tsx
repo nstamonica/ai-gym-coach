@@ -1,5 +1,6 @@
 import { ChevronRight } from "lucide-react";
 import Link from "next/link";
+import { exerciseAbbreviation } from "@/lib/exercises";
 import type { AnalysisSummary } from "@/lib/types";
 import { GradeBadge } from "./grade-badge";
 import { LocalDate } from "./local-date";
@@ -7,25 +8,38 @@ import { Thumbnail } from "./thumbnail";
 
 export function AnalysisList({ items }: { items: AnalysisSummary[] }) {
   return (
-    <ul className="divide-y divide-slate-800/80 overflow-hidden rounded-2xl border border-white/10 bg-[var(--surface-card)]">
+    <ul className="divide-y divide-iron-800 overflow-hidden rounded-lg border border-iron-800 bg-iron-900/70">
       {items.map((item) => (
         <li key={item.id}>
           <Link
             href={`/analyses/${item.id}`}
-            className="group flex items-center gap-4 p-3 transition hover:bg-slate-800/50 focus-visible:bg-slate-800/50 focus-visible:outline-none sm:p-4"
+            className="group flex items-center gap-4 p-3 transition hover:bg-iron-800/50 focus-visible:bg-iron-800/50 focus-visible:outline-none sm:gap-5 sm:p-4"
           >
-            <Thumbnail id={item.id} hasThumbnail={item.hasThumbnail} className="aspect-video w-24 shrink-0 rounded-lg sm:w-32" />
+            <Thumbnail
+              id={item.id}
+              hasThumbnail={item.hasThumbnail}
+              abbreviation={item.isExercise ? exerciseAbbreviation(item.exerciseKey, item.exercise) : undefined}
+              className="aspect-[4/3] w-20 shrink-0 rounded-md sm:w-24"
+            />
             <div className="min-w-0 flex-1">
-              <p className="line-clamp-2 font-semibold text-white">
+              <p className="line-clamp-2 font-semibold text-iron-50">
                 {item.isExercise ? item.exercise || item.exerciseLabel : "No exercise detected"}
               </p>
-              <p className="text-sm text-slate-400">
+              <p className="text-sm text-iron-400">
                 <LocalDate iso={item.createdAt} />
               </p>
-              {item.summary && <p className="mt-1 line-clamp-2 hidden text-sm text-slate-400 sm:block">{item.summary}</p>}
+              {/* The wrapper toggles visibility so it doesn't override line-clamp's display. */}
+              {item.summary && (
+                <div className="mt-1 hidden sm:block">
+                  <p className="line-clamp-1 text-sm text-iron-400">{item.summary}</p>
+                </div>
+              )}
             </div>
             <GradeBadge grade={item.isExercise ? item.grade : null} size="sm" />
-            <ChevronRight className="size-5 shrink-0 text-slate-600 transition group-hover:text-slate-400" aria-hidden />
+            <ChevronRight
+              className="size-5 shrink-0 text-iron-600 transition group-hover:translate-x-0.5 group-hover:text-iron-300"
+              aria-hidden
+            />
           </Link>
         </li>
       ))}

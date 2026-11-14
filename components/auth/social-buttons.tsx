@@ -48,10 +48,10 @@ export function SocialButtons({ providers, next }: { providers: Provider[]; next
         </Button>
       ))}
       {error && <FormMessage tone="error">{error}</FormMessage>}
-      <div className="flex items-center gap-3 pt-1 text-xs tracking-wider text-slate-500 uppercase">
-        <span className="h-px flex-1 bg-slate-800" />
+      <div className="flex items-center gap-3 pt-1 label-caps text-iron-400">
+        <span className="h-px flex-1 bg-iron-800" />
         or
-        <span className="h-px flex-1 bg-slate-800" />
+        <span className="h-px flex-1 bg-iron-800" />
       </div>
     </div>
   );

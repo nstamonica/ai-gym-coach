@@ -63,6 +63,46 @@ export function groupKey(key: unknown, exerciseName: string): string {
   return slug ? `${CUSTOM_PREFIX}${slug}` : "other";
 }
 
+// Gym shorthand, shown where a session has no still frame.
+const ABBREVIATIONS: Record<Exclude<ExerciseKey, "other">, string> = {
+  back_squat: "SQ",
+  front_squat: "FSQ",
+  goblet_squat: "GSQ",
+  bodyweight_squat: "AIR",
+  split_squat: "SPLIT",
+  lunge: "LUNGE",
+  leg_press: "LP",
+  deadlift: "DL",
+  sumo_deadlift: "SUMO",
+  romanian_deadlift: "RDL",
+  hip_thrust: "HT",
+  kettlebell_swing: "KB",
+  bench_press: "BP",
+  incline_bench_press: "INC",
+  dumbbell_bench_press: "DBP",
+  push_up: "PUSH",
+  overhead_press: "OHP",
+  dip: "DIP",
+  barbell_row: "ROW",
+  dumbbell_row: "DBR",
+  pull_up: "PULL",
+  lat_pulldown: "LAT",
+  clean: "CL",
+  snatch: "SN",
+};
+
+/** "back_squat" -> "SQ"; anything else -> the initials of its name ("Cable fly" -> "CF"). */
+export function exerciseAbbreviation(key: string, exerciseName = ""): string {
+  if (isExerciseKey(key) && key !== "other") return ABBREVIATIONS[key];
+  const initials = slugify(exerciseName)
+    .split("-")
+    .filter(Boolean)
+    .slice(0, 3)
+    .map((word) => word[0]!.toUpperCase())
+    .join("");
+  return initials || "—";
+}
+
 /** A display label for a group key; custom groups fall back to the model's own name. */
 export function exerciseLabel(key: string, fallbackName = ""): string {
   if (isExerciseKey(key)) return EXERCISES[key];

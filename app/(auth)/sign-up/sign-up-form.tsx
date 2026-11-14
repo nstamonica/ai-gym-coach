@@ -58,10 +58,10 @@ export function SignUpForm({ next, providers }: { next: string; providers: Provi
         <Button type="submit" size="lg" className="w-full" loading={pending}>
           Create account
         </Button>
-        <p className="text-center text-xs leading-relaxed text-slate-400">
+        <p className="text-center text-xs leading-relaxed text-iron-400">
           By creating an account you agree that AI feedback can be wrong and isn&apos;t medical advice. See how we
           handle your videos in our{" "}
-          <Link href="/privacy" className="underline underline-offset-2 hover:text-slate-200">
+          <Link href="/privacy" className="underline underline-offset-2 hover:text-iron-200">
             privacy notes
           </Link>
           .

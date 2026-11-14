@@ -8,8 +8,8 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
         <Logo />
       </header>
       <main className="mx-auto flex w-full max-w-md flex-1 flex-col justify-center py-10">{children}</main>
-      <footer className="mx-auto w-full max-w-md text-center text-sm text-slate-400">
-        <Link href="/privacy" className="hover:text-slate-200">
+      <footer className="mx-auto w-full max-w-md text-center text-sm text-iron-400">
+        <Link href="/privacy" className="hover:text-iron-200">
           Privacy
         </Link>
       </footer>

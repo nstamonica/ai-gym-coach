@@ -1,16 +1,19 @@
 "use client";
 
+import { ChartLine, Table2 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useId, useMemo, useRef, useState, type KeyboardEvent, type PointerEvent } from "react";
 import { cx } from "@/lib/cx";
 import { GRADE_LABELS, GRADE_POINTS, GRADES } from "@/lib/grades";
 import type { ExerciseProgress } from "@/lib/progress";
-import { GradeBadge } from "./grade-badge";
+import { GRADE_COLOR, GradeBadge } from "./grade-badge";
+import { SectionHeading } from "./page-header";
 
 const PLOT_HEIGHT = 220;
 const AXIS_BAND = 28; // room for the date labels under the plot
 const MARGIN = { top: 16, right: 28, bottom: 8, left: 36 };
+const AXIS_FONT = { fontFamily: "var(--font-barlow-condensed), sans-serif", letterSpacing: "0.04em" } as const;
 
 const formatDate = (iso: string, withYear = false) =>
   new Date(iso).toLocaleDateString(undefined, { month: "short", day: "numeric", ...(withYear ? { year: "numeric" } : {}) });
@@ -26,16 +29,15 @@ export function ProgressChart({ exercises }: { exercises: ExerciseProgress[] }) 
     <section aria-labelledby="progress-heading" className="space-y-4">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h2 id="progress-heading" className="text-lg font-semibold text-white">
-            Progress by lift
-          </h2>
-          <p className="text-sm text-slate-400">Your form grade each time you filmed it.</p>
+          <SectionHeading id="progress-heading">Progress by lift</SectionHeading>
+          <p className="mt-1 text-sm text-iron-400">Your form grade each time you filmed it.</p>
         </div>
         <button
           type="button"
           onClick={() => setView((v) => (v === "chart" ? "table" : "chart"))}
-          className="ml-auto rounded-lg px-2.5 py-1.5 text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white"
+          className="ml-auto inline-flex items-center gap-1.5 rounded-md px-2.5 py-1.5 text-sm font-semibold text-iron-300 transition hover:bg-iron-800 hover:text-iron-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-iron-100"
         >
+          {view === "chart" ? <Table2 className="size-4" aria-hidden /> : <ChartLine className="size-4" aria-hidden />}
           {view === "chart" ? "Show as table" : "Show as chart"}
         </button>
       </div>
@@ -43,42 +45,45 @@ export function ProgressChart({ exercises }: { exercises: ExerciseProgress[] }) 
       {/* One filter row above the card it scopes. */}
       {exercises.length > 1 && (
         <div role="group" aria-label="Choose a lift" className="flex flex-wrap gap-2">
-          {exercises.map((exercise) => (
-            <button
-              key={exercise.key}
-              type="button"
-              aria-pressed={exercise.key === selected.key}
-              onClick={() => setSelectedKey(exercise.key)}
-              className={cx(
-                "rounded-full border px-3 py-1.5 text-sm font-medium transition",
-                exercise.key === selected.key
-                  ? "border-blue-500/60 bg-blue-500/15 text-white"
-                  : "border-slate-700 text-slate-300 hover:border-slate-500 hover:text-white",
-              )}
-            >
-              {exercise.label}
-              <span className="ml-1.5 text-slate-400">{exercise.count}</span>
-            </button>
-          ))}
+          {exercises.map((exercise) => {
+            const active = exercise.key === selected.key;
+            return (
+              <button
+                key={exercise.key}
+                type="button"
+                aria-pressed={active}
+                onClick={() => setSelectedKey(exercise.key)}
+                className={cx(
+                  "rounded-md border px-3 py-1.5 text-sm font-semibold transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-iron-100",
+                  active
+                    ? "border-iron-100 bg-iron-100 text-iron-950"
+                    : "border-iron-700 text-iron-300 hover:border-iron-500 hover:text-iron-50",
+                )}
+              >
+                {exercise.label}
+                <span className={cx("ml-1.5 tabular-nums", active ? "text-iron-600" : "text-iron-400")}>{exercise.count}</span>
+              </button>
+            );
+          })}
         </div>
       )}
 
-      <div className="rounded-2xl border border-white/10 bg-[var(--surface-card)] p-4 sm:p-5">
+      <div className="rounded-lg border border-iron-800 bg-iron-900 p-4 sm:p-5">
         <div className="mb-3 flex flex-wrap items-baseline justify-between gap-2">
-          <h3 className="font-semibold text-white">{selected.label}</h3>
-          <p className="text-sm text-slate-400">
+          <h3 className="font-display text-lg font-bold tracking-wide text-iron-50 uppercase">{selected.label}</h3>
+          <p className="text-sm text-iron-400">
             {selected.count} {selected.count === 1 ? "session" : "sessions"}
             {selected.count > 1 && (
               <>
                 {" "}
-                · {selected.first.grade} → {selected.latest.grade}
+                · from {selected.first.grade} to {selected.latest.grade}
               </>
             )}
           </p>
         </div>
         {view === "chart" ? <Chart exercise={selected} /> : <ProgressTable exercise={selected} />}
         {view === "chart" && selected.count === 1 && (
-          <p className="mt-2 text-sm text-slate-400">Film this lift again to see your trend.</p>
+          <p className="mt-2 text-sm text-iron-400">Film this lift again to see your trend.</p>
         )}
       </div>
     </section>
@@ -164,7 +169,7 @@ function Chart({ exercise }: { exercise: ExerciseProgress }) {
           onPointerMove={(e: PointerEvent) => setActive(nearest(e.clientX))}
           onPointerLeave={() => setActive(null)}
           onClick={() => activePoint && router.push(`/analyses/${activePoint.id}`)}
-          className="cursor-pointer overflow-visible rounded-lg focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-400"
+          className="cursor-pointer overflow-visible rounded-lg focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-iron-100"
         >
           {/* Hairline gridlines and labels, one per grade. */}
           {GRADES.map((grade) => {
@@ -172,7 +177,7 @@ function Chart({ exercise }: { exercise: ExerciseProgress }) {
             return (
               <g key={grade}>
                 <line x1={geometry.plotLeft} x2={geometry.plotRight} y1={gy} y2={gy} stroke="var(--chart-grid)" strokeWidth={1} />
-                <text x={MARGIN.left - 14} y={gy} dy="0.35em" textAnchor="end" fill="var(--chart-text)" fontSize={12} className="tabular-nums">
+                <text x={MARGIN.left - 14} y={gy} dy="0.35em" textAnchor="end" fill="var(--chart-text)" fontSize={13} fontWeight={600} style={AXIS_FONT}>
                   {grade}
                 </text>
               </g>
@@ -187,7 +192,8 @@ function Chart({ exercise }: { exercise: ExerciseProgress }) {
               y={PLOT_HEIGHT + 18}
               textAnchor={points.length === 1 ? "middle" : i === 0 ? "start" : i === points.length - 1 ? "end" : "middle"}
               fill="var(--chart-text)"
-              fontSize={12}
+              fontSize={13}
+              style={AXIS_FONT}
             >
               {formatDate(points[i]!.date)}
             </text>
@@ -209,21 +215,22 @@ function Chart({ exercise }: { exercise: ExerciseProgress }) {
             <polyline
               points={geometry.xy.map((p) => `${p.x},${p.y}`).join(" ")}
               fill="none"
-              stroke="var(--chart-series)"
+              stroke="var(--chart-line)"
               strokeWidth={2}
               strokeLinejoin="round"
               strokeLinecap="round"
             />
           )}
 
-          {/* Markers with a surface ring so they stay legible where they meet the line. */}
+          {/* Markers take their grade's color (the y-position already encodes it, so color
+              is redundant, never the only cue), with a surface ring where they meet the line. */}
           {geometry.xy.map((p, i) => (
             <circle
               key={points[i]!.id}
               cx={p.x}
               cy={p.y}
-              r={i === active ? 6 : 4.5}
-              fill="var(--chart-series)"
+              r={i === active ? 7 : 5}
+              fill={GRADE_COLOR[points[i]!.grade]}
               stroke="var(--surface-card)"
               strokeWidth={2}
             />
@@ -231,7 +238,7 @@ function Chart({ exercise }: { exercise: ExerciseProgress }) {
 
           {/* Direct label on the latest session only. */}
           {latest && active === null && (
-            <text x={latest.x + 10} y={latest.y} dy="0.35em" fill="#e2e8f0" fontSize={12} fontWeight={600}>
+            <text x={latest.x + 11} y={latest.y} dy="0.35em" fill="var(--ink)" fontSize={14} fontWeight={700} style={AXIS_FONT}>
               {exercise.latest.grade}
             </text>
           )}
@@ -240,18 +247,18 @@ function Chart({ exercise }: { exercise: ExerciseProgress }) {
 
       {activePoint && activeXY && (
         <div
-          className="pointer-events-none absolute z-10 w-max max-w-56 -translate-x-1/2 -translate-y-full rounded-lg border border-white/10 bg-slate-950/95 px-3 py-2 text-sm shadow-xl"
+          className="pointer-events-none absolute z-10 w-max max-w-56 -translate-x-1/2 -translate-y-full rounded-md border border-iron-700 bg-iron-950/95 px-3 py-2 text-sm shadow-xl shadow-black/40"
           style={{
             left: Math.min(Math.max(activeXY.x, 90), width - 90),
             top: activeXY.y - 12,
           }}
         >
           <p className="flex items-center gap-2">
-            <span className="h-0.5 w-3 rounded-full bg-[var(--chart-series)]" aria-hidden />
-            <span className="font-semibold text-white">Grade {activePoint.grade}</span>
-            <span className="text-slate-400">{GRADE_LABELS[activePoint.grade]}</span>
+            <span className="size-2.5 rounded-full" style={{ backgroundColor: GRADE_COLOR[activePoint.grade] }} aria-hidden />
+            <span className="font-semibold text-iron-50">Grade {activePoint.grade}</span>
+            <span className="text-iron-400">{GRADE_LABELS[activePoint.grade]}</span>
           </p>
-          <p className="mt-0.5 text-slate-400">
+          <p className="mt-0.5 text-iron-400">
             {formatDate(activePoint.date, true)} · {activePoint.exercise || exercise.label}
           </p>
         </div>
@@ -270,7 +277,7 @@ function ProgressTable({ exercise }: { exercise: ExerciseProgress }) {
     <div className="max-h-[248px] overflow-y-auto">
       <table className="w-full text-left text-sm">
         <caption className="sr-only">{exercise.label}: form grade by session, newest first</caption>
-        <thead className="text-xs tracking-wider text-slate-400 uppercase">
+        <thead className="label-caps text-iron-400">
           <tr>
             <th scope="col" className="py-2 pr-4 font-semibold">
               Date
@@ -283,12 +290,12 @@ function ProgressTable({ exercise }: { exercise: ExerciseProgress }) {
             </th>
           </tr>
         </thead>
-        <tbody className="divide-y divide-slate-800">
+        <tbody className="divide-y divide-iron-800">
           {rows.map((point) => (
             <tr key={point.id}>
-              <td className="py-2 pr-4 text-slate-300 tabular-nums">{formatDate(point.date, true)}</td>
+              <td className="py-2 pr-4 text-iron-300 tabular-nums">{formatDate(point.date, true)}</td>
               <td className="py-2 pr-4">
-                <Link href={`/analyses/${point.id}`} className="text-slate-200 hover:text-white hover:underline">
+                <Link href={`/analyses/${point.id}`} className="text-iron-200 hover:text-iron-50 hover:underline">
                   {point.exercise || exercise.label}
                 </Link>
               </td>

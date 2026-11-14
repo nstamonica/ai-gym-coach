@@ -32,7 +32,7 @@ export function Avatar({ user, className }: { user: MenuUser; className?: string
   return (
     <span
       className={cx(
-        "grid size-9 place-items-center rounded-full bg-gradient-to-br from-blue-500 to-emerald-500 text-sm font-bold text-white",
+        "grid size-9 place-items-center rounded-full bg-iron-800 font-display text-sm font-bold tracking-wide text-iron-100 ring-1 ring-iron-700",
         className,
       )}
       aria-hidden
@@ -77,7 +77,7 @@ export function UserMenu({ user }: { user: MenuUser }) {
   }
 
   const item =
-    "flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left text-sm text-slate-200 hover:bg-slate-800 focus:bg-slate-800 focus:outline-none";
+    "flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left text-sm text-iron-200 hover:bg-iron-800 focus:bg-iron-800 focus:outline-none";
 
   return (
     <div ref={rootRef} className="relative">
@@ -88,7 +88,7 @@ export function UserMenu({ user }: { user: MenuUser }) {
         aria-haspopup="menu"
         aria-expanded={open}
         aria-label="Account menu"
-        className="rounded-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-400"
+        className="rounded-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-iron-100"
       >
         <Avatar user={user} />
       </button>
@@ -96,19 +96,19 @@ export function UserMenu({ user }: { user: MenuUser }) {
         <div
           role="menu"
           aria-label="Account"
-          className="absolute right-0 mt-2 w-64 rounded-xl border border-white/10 bg-slate-900 p-1.5 shadow-2xl shadow-black/50"
+          className="absolute right-0 mt-2 w-64 rounded-md border border-iron-800 bg-iron-900 p-1.5 shadow-2xl shadow-black/60"
         >
           <div className="px-3 py-2.5">
-            <p className="truncate text-sm font-semibold text-white">{user.name}</p>
-            <p className="truncate text-sm text-slate-400">{user.email}</p>
+            <p className="truncate text-sm font-semibold text-iron-50">{user.name}</p>
+            <p className="truncate text-sm text-iron-400">{user.email}</p>
           </div>
-          <div className="my-1 h-px bg-slate-800" />
+          <div className="my-1 h-px bg-iron-800" />
           <Link href="/settings" role="menuitem" className={item} onClick={() => setOpen(false)}>
-            <Settings className="size-4 text-slate-400" aria-hidden />
+            <Settings className="size-4 text-iron-400" aria-hidden />
             Settings
           </Link>
           <button type="button" role="menuitem" className={item} onClick={handleSignOut} disabled={signingOut}>
-            <LogOut className="size-4 text-slate-400" aria-hidden />
+            <LogOut className="size-4 text-iron-400" aria-hidden />
             {signingOut ? "Signing out…" : "Sign out"}
           </button>
         </div>

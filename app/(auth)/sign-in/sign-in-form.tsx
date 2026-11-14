@@ -58,7 +58,7 @@ export function SignInForm({
           required
           aside={
             canResetPassword && (
-              <Link href="/forgot-password" className="text-sm text-blue-300 hover:text-blue-200">
+              <Link href="/forgot-password" className="text-sm text-iron-50 underline decoration-iron-600 underline-offset-4 transition hover:decoration-iron-50">
                 Forgot password?
               </Link>
             )

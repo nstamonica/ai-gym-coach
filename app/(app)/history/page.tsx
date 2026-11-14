@@ -40,11 +40,12 @@ export default async function HistoryPage({
 
   const chip = (active: boolean) =>
     cx(
-      "rounded-full border px-3 py-1.5 text-sm font-medium transition",
+      "rounded-md border px-3 py-1.5 text-sm font-semibold transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-iron-100",
       active
-        ? "border-blue-500/60 bg-blue-500/15 text-white"
-        : "border-slate-700 text-slate-300 hover:border-slate-500 hover:text-white",
+        ? "border-iron-100 bg-iron-100 text-iron-950"
+        : "border-iron-700 text-iron-300 hover:border-iron-500 hover:text-iron-50",
     );
+  const count = (active: boolean) => cx("ml-1.5 tabular-nums", active ? "text-iron-600" : "text-iron-400");
 
   return (
     <div className="space-y-8">
@@ -66,7 +67,7 @@ export default async function HistoryPage({
               aria-current={exercise === lift.key ? "page" : undefined}
             >
               {lift.label}
-              <span className="ml-1.5 text-slate-400">{lift.count}</span>
+              <span className={count(exercise === lift.key)}>{lift.count}</span>
             </Link>
           ))}
         </nav>
@@ -75,9 +76,11 @@ export default async function HistoryPage({
       {list.items.length > 0 ? (
         <AnalysisList items={list.items} />
       ) : (
-        <div className="rounded-2xl border border-dashed border-slate-700 px-6 py-14 text-center">
-          <p className="font-semibold text-white">{page > 1 ? "No more form checks." : "No form checks yet."}</p>
-          <p className="mt-1 text-slate-400">Your analyses will show up here.</p>
+        <div className="rounded-lg border border-dashed border-iron-700 px-6 py-14 text-center">
+          <p className="font-display text-2xl font-bold tracking-tight text-iron-50 uppercase">
+            {page > 1 ? "No more form checks." : "No form checks yet."}
+          </p>
+          <p className="mt-1 text-iron-400">Your analyses will show up here.</p>
           <Link href="/analyze" className={buttonClasses({ className: "mt-5" })}>
             Analyze a set
           </Link>
@@ -86,25 +89,23 @@ export default async function HistoryPage({
 
       {pages > 1 && (
         <nav aria-label="Pages" className="flex items-center justify-between gap-4">
-          {page > 1 ? (
-            <Link href={href({ exercise, page: page - 1 })} className={buttonClasses({ variant: "secondary", size: "sm" })}>
-              <ChevronLeft className="size-4" aria-hidden />
-              Newer
-            </Link>
-          ) : (
-            <span />
-          )}
-          <span className="text-sm text-slate-400">
+          <span className="text-sm text-iron-400 tabular-nums">
             Page {page} of {pages}
           </span>
-          {page < pages ? (
-            <Link href={href({ exercise, page: page + 1 })} className={buttonClasses({ variant: "secondary", size: "sm" })}>
-              Older
-              <ChevronRight className="size-4" aria-hidden />
-            </Link>
-          ) : (
-            <span />
-          )}
+          <div className="flex gap-2">
+            {page > 1 && (
+              <Link href={href({ exercise, page: page - 1 })} className={buttonClasses({ variant: "secondary", size: "sm" })}>
+                <ChevronLeft className="size-4" aria-hidden />
+                Newer
+              </Link>
+            )}
+            {page < pages && (
+              <Link href={href({ exercise, page: page + 1 })} className={buttonClasses({ variant: "secondary", size: "sm" })}>
+                Older
+                <ChevronRight className="size-4" aria-hidden />
+              </Link>
+            )}
+          </div>
         </nav>
       )}
     </div>

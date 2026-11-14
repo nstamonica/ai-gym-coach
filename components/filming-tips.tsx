@@ -8,12 +8,12 @@ const TIPS = [
 
 export function FilmingTips() {
   return (
-    <section className="rounded-2xl border border-white/10 p-5 sm:p-6">
-      <h2 className="font-semibold text-white">For the most accurate feedback</h2>
+    <section className="rounded-lg border border-iron-800 p-5 sm:p-6">
+      <h2 className="label-caps text-iron-300">For the most accurate feedback</h2>
       <ul className="mt-4 space-y-3">
         {TIPS.map(({ Icon, text }) => (
-          <li key={text} className="flex gap-3 text-slate-300">
-            <Icon className="mt-0.5 size-5 shrink-0 text-blue-300" aria-hidden />
+          <li key={text} className="flex gap-3 text-iron-200">
+            <Icon className="mt-0.5 size-5 shrink-0 text-iron-400" aria-hidden />
             {text}
           </li>
         ))}

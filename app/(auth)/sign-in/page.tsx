@@ -30,9 +30,9 @@ export default async function SignInPage({
         notice={params.reset === "1" ? "Your password was changed. Sign in with your new password." : null}
         initialError={oauthErrorMessage(params.error)}
       />
-      <p className="mt-6 text-center text-sm text-slate-400">
+      <p className="mt-6 text-center text-sm text-iron-400">
         New here?{" "}
-        <Link href={signUpHref} className="font-semibold text-blue-300 hover:text-blue-200">
+        <Link href={signUpHref} className="font-semibold text-iron-50 underline decoration-iron-600 underline-offset-4 transition hover:decoration-iron-50">
           Create an account
         </Link>
       </p>

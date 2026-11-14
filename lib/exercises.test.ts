@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { exerciseLabel, groupKey, isExerciseKey, slugify } from "./exercises";
+import { EXERCISE_KEYS, exerciseAbbreviation, exerciseLabel, groupKey, isExerciseKey, slugify } from "./exercises";
 
 describe("slugify", () => {
   it("lowercases and joins words with dashes", () => {
@@ -47,6 +47,28 @@ describe("exerciseLabel", () => {
 
   it("derives a label from the slug when no name is given", () => {
     expect(exerciseLabel("custom:sled-push")).toBe("Sled push");
+  });
+});
+
+describe("exerciseAbbreviation", () => {
+  it("uses gym shorthand for known lifts", () => {
+    expect(exerciseAbbreviation("back_squat", "High-bar back squat")).toBe("SQ");
+    expect(exerciseAbbreviation("overhead_press")).toBe("OHP");
+  });
+
+  it("has a short, unique abbreviation for every known lift", () => {
+    const abbreviations = EXERCISE_KEYS.filter((key) => key !== "other").map((key) => exerciseAbbreviation(key));
+    expect(new Set(abbreviations).size).toBe(abbreviations.length);
+    for (const abbreviation of abbreviations) expect(abbreviation.length).toBeLessThanOrEqual(5);
+  });
+
+  it("uses the initials of custom exercise names", () => {
+    expect(exerciseAbbreviation("custom:cable-fly", "Cable fly")).toBe("CF");
+    expect(exerciseAbbreviation("other", "Single-arm landmine press (kneeling)")).toBe("SAL");
+  });
+
+  it("falls back to a dash when there's nothing to abbreviate", () => {
+    expect(exerciseAbbreviation("other", "")).toBe("—");
   });
 });
 

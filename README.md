@@ -38,7 +38,7 @@ AI Gym Coach is a full-stack web app: upload a short video of a lift and Google'
 | Area | Choice |
 | --- | --- |
 | App | Next.js 16 (App Router, Server Components, Server Actions, Proxy), React 19, TypeScript (strict) |
-| UI | Tailwind CSS 4, lucide icons, a hand-built accessible SVG chart |
+| UI | Tailwind CSS 4 with a small custom design system (OKLCH color tokens, Barlow and Barlow Condensed), lucide icons, a hand-built accessible SVG chart |
 | Auth | [Better Auth](https://better-auth.com): email/password, GitHub, Google; database sessions; rate limiting |
 | Data | PostgreSQL with Drizzle ORM and SQL migrations. [PGlite](https://pglite.dev) (Postgres compiled to WebAssembly) for zero-setup local development and tests |
 | AI | Gemini via `@google/genai`: video understanding, structured JSON output, model fallback chain |
@@ -78,6 +78,7 @@ Some decisions worth calling out:
 - **Authorization sits next to the data.** Every query in [lib/server/analyses.ts](lib/server/analyses.ts) filters by the session's user id; [proxy.ts](proxy.ts) only does optimistic redirects. Data sent to the browser goes through view types that never include user ids, file names or thumbnail bytes.
 - **Model output is untrusted.** Gemini answers in a JSON schema ([lib/analysis.ts](lib/analysis.ts)), and the response is still validated and normalized before it's stored. The lifter's free-text note is fenced in the prompt and treated as context, not instructions.
 - **Zero-setup development, real Postgres everywhere.** Without `DATABASE_URL` the app runs an embedded Postgres (PGlite) and migrates it on startup. Tests use the same engine in memory with the real migrations, so there's no Docker and no mocked database.
+- **Color is reserved for meaning.** The interface is chalk-white on warm near-black, so the only color on screen is the A–F grade scale, safety warnings and progress. Grades always show their letter too, so color is never the only cue, and every text color is checked for at least 4.5:1 contrast ([app/globals.css](app/globals.css)).
 
 ## Run it locally
 

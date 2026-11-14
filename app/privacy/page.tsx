@@ -15,10 +15,10 @@ export default function PrivacyPage() {
         <Logo />
       </header>
       <main className="mx-auto w-full max-w-3xl flex-1 px-4 py-10">
-        <h1 className="text-3xl font-bold tracking-tight text-white">How we handle your data</h1>
-        <p className="mt-3 text-slate-400">Plain-language notes on what happens to your videos and account.</p>
+        <h1 className="font-display text-5xl leading-[0.95] font-bold tracking-tight text-iron-50 uppercase">How we handle your data</h1>
+        <p className="mt-4 max-w-[34rem] text-lg text-iron-400">Plain-language notes on what happens to your videos and account.</p>
 
-        <div className="mt-10 space-y-8 leading-relaxed text-slate-300 [&_h2]:mb-2 [&_h2]:text-lg [&_h2]:font-semibold [&_h2]:text-white">
+        <div className="mt-10 max-w-[34rem] space-y-8 leading-relaxed text-iron-300 [&_h2]:mb-2 [&_h2]:font-display [&_h2]:text-2xl [&_h2]:font-bold [&_h2]:tracking-tight [&_h2]:text-iron-50 [&_h2]:uppercase">
           <section>
             <h2>Your videos</h2>
             <p>
@@ -47,7 +47,7 @@ export default function PrivacyPage() {
           <section>
             <h2>Your controls</h2>
             <p>
-              From <Link href="/settings" className="text-blue-300 underline underline-offset-2">Settings</Link> you can
+              From <Link href="/settings" className="text-iron-50 underline decoration-iron-600 underline-offset-4 hover:decoration-iron-50">Settings</Link> you can
               download all of your data as JSON, sign out other devices, or delete your account, which permanently deletes
               every analysis with it.
             </p>

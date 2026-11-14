@@ -185,18 +185,19 @@ export function AnalyzeFlow({ initialQuota, tips }: { initialQuota: Quota; tips:
         ref={resultRef}
         tabIndex={-1}
         aria-label="Your form review"
-        className="rounded-2xl border border-white/10 bg-[var(--surface-card)] p-5 shadow-2xl shadow-black/30 focus:outline-none sm:p-8"
+        className="rounded-lg border border-iron-800 bg-iron-900 p-5 focus:outline-none sm:p-8"
       >
         <AnalysisReport
           analysis={phase.analysis}
           previous={phase.previous}
+          revealGrade
           media={
             previewUrl && (
-              <video src={previewUrl} controls playsInline muted className="max-h-[55vh] w-full rounded-xl bg-black" />
+              <video src={previewUrl} controls playsInline muted className="max-h-[55vh] w-full rounded-md bg-black" />
             )
           }
         />
-        <div className="mt-8 flex flex-col gap-3 border-t border-slate-800 pt-6 sm:flex-row">
+        <div className="mt-8 flex flex-col gap-3 border-t border-iron-800 pt-6 sm:flex-row">
           <Button size="lg" className="flex-1" onClick={reset}>
             Analyze another video
           </Button>
@@ -205,7 +206,7 @@ export function AnalyzeFlow({ initialQuota, tips }: { initialQuota: Quota; tips:
             <ArrowRight className="size-4" aria-hidden />
           </Link>
         </div>
-        <p className="mt-4 text-center text-sm text-slate-400">
+        <p className="mt-4 text-center text-sm text-iron-400">
           Saved to your history. Your video has been deleted from the AI provider.
         </p>
       </section>
@@ -216,7 +217,7 @@ export function AnalyzeFlow({ initialQuota, tips }: { initialQuota: Quota; tips:
     <div className="space-y-8">
       <QuotaNotice quota={quota} />
 
-      <section className="space-y-5 rounded-2xl border border-white/10 bg-[var(--surface-card)] p-5 shadow-2xl shadow-black/30 sm:p-8">
+      <section className="space-y-5 rounded-lg border border-iron-800 bg-iron-900 p-5 sm:p-8">
         {!file || !previewUrl ? (
           <>
             <label
@@ -227,18 +228,18 @@ export function AnalyzeFlow({ initialQuota, tips }: { initialQuota: Quota; tips:
               onDragLeave={() => setDragging(false)}
               onDrop={onDrop}
               className={cx(
-                "flex cursor-pointer flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed px-6 py-14 text-center transition focus-within:ring-2 focus-within:ring-blue-400",
-                dragging ? "border-blue-400 bg-blue-500/10" : "border-slate-700 hover:border-slate-500",
+                "flex cursor-pointer flex-col items-center justify-center gap-3 rounded-md border-2 border-dashed px-6 py-14 text-center transition focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-iron-100",
+                dragging ? "border-iron-200 bg-iron-800/60" : "border-iron-700 hover:border-iron-500 hover:bg-iron-800/30",
                 (checking || outOfQuota) && "pointer-events-none opacity-60",
               )}
             >
-              <span className="grid size-14 place-items-center rounded-2xl bg-blue-500/15 text-blue-300">
+              <span className="grid size-14 place-items-center rounded-md bg-iron-800 text-iron-100">
                 <Upload className="size-7" aria-hidden />
               </span>
-              <span className="text-lg font-semibold text-white">
+              <span className="font-display text-2xl font-bold tracking-tight text-iron-50 uppercase">
                 {checking ? "Checking your video…" : "Choose a video or drag it here"}
               </span>
-              <span className="text-sm text-slate-400">
+              <span className="text-sm text-iron-400">
                 MP4, MOV or WebM · up to {MAX_DURATION_SEC} seconds · {MAX_FILE_MB} MB max
               </span>
               <input
@@ -257,8 +258,8 @@ export function AnalyzeFlow({ initialQuota, tips }: { initialQuota: Quota; tips:
         ) : (
           <>
             <div className="space-y-3">
-              <video src={previewUrl} controls playsInline muted className="max-h-[55vh] w-full rounded-xl bg-black" />
-              <div className="flex items-center justify-between gap-4 text-sm text-slate-400">
+              <video src={previewUrl} controls playsInline muted className="max-h-[55vh] w-full rounded-md bg-black" />
+              <div className="flex items-center justify-between gap-4 text-sm text-iron-400">
                 <span className="truncate">{file.name}</span>
                 <span className="shrink-0">
                   {info.duration ? `${Math.round(info.duration)} s · ` : ""}
@@ -303,7 +304,7 @@ export function AnalyzeFlow({ initialQuota, tips }: { initialQuota: Quota; tips:
 
       {!file && tips}
 
-      <p className="text-center text-xs leading-relaxed text-slate-400">
+      <p className="text-center text-xs leading-relaxed text-iron-400">
         Your video goes straight to Google&apos;s Gemini API for analysis and is deleted as soon as your review is ready.
         We keep the written review and one still frame so you can track your progress.
       </p>
@@ -314,7 +315,7 @@ export function AnalyzeFlow({ initialQuota, tips }: { initialQuota: Quota; tips:
 function QuotaNotice({ quota }: { quota: Quota }) {
   if (quota.remaining > 0) {
     return (
-      <p className="flex items-center gap-2 text-sm text-slate-400">
+      <p className="flex items-center gap-2 text-sm text-iron-400">
         <Clock3 className="size-4" aria-hidden />
         {quota.remaining} of {quota.limit} analyses left in the last 24 hours
       </p>
@@ -337,19 +338,19 @@ function UploadProgress({ progress }: { progress: number }) {
   const percent = Math.round(progress * 100);
   return (
     <div className="space-y-2" aria-live="polite">
-      <div className="flex justify-between text-sm text-slate-400">
+      <div className="flex justify-between text-sm text-iron-400">
         <span>Uploading…</span>
         <span>{percent}%</span>
       </div>
       <div
-        className="h-2 overflow-hidden rounded-full bg-slate-800"
+        className="h-1.5 overflow-hidden rounded-full bg-iron-800"
         role="progressbar"
         aria-label="Upload progress"
         aria-valuenow={percent}
         aria-valuemin={0}
         aria-valuemax={100}
       >
-        <div className="h-full rounded-full bg-blue-500 transition-[width]" style={{ width: `${percent}%` }} />
+        <div className="h-full rounded-full bg-iron-100 transition-[width]" style={{ width: `${percent}%` }} />
       </div>
     </div>
   );
@@ -362,13 +363,13 @@ function AnalyzingStatus() {
     return () => clearInterval(timer);
   }, []);
   return (
-    <div className="flex items-center gap-3 rounded-xl bg-blue-500/10 px-4 py-3" aria-live="polite">
+    <div className="flex items-center gap-3 rounded-md border border-iron-700 bg-iron-800/40 px-4 py-3" aria-live="polite">
       <span className="relative flex size-3 shrink-0">
-        <span className="absolute inline-flex size-full animate-ping rounded-full bg-blue-400 opacity-60" />
-        <span className="relative inline-flex size-3 rounded-full bg-blue-400" />
+        <span className="absolute inline-flex size-full animate-ping rounded-full bg-iron-100 opacity-50" />
+        <span className="relative inline-flex size-3 rounded-full bg-iron-100" />
       </span>
-      <p className="text-sm text-blue-100">
-        {STATUS_MESSAGES[index]} <span className="text-blue-200/70">This usually takes 10–60 seconds.</span>
+      <p className="text-sm text-iron-100">
+        {STATUS_MESSAGES[index]} <span className="text-iron-400">This usually takes 10–60 seconds.</span>
       </p>
     </div>
   );

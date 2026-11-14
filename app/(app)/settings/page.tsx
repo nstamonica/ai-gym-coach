@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { headers } from "next/headers";
 import { PageHeader } from "@/components/page-header";
 import { buttonClasses } from "@/components/ui/button";
+import { cx } from "@/lib/cx";
 import { auth } from "@/lib/server/auth";
 import { requireUser } from "@/lib/server/session";
 import { DeleteAccount, PasswordForm, ProfileForm, SignOutEverywhere } from "./forms";
@@ -20,46 +21,49 @@ export default async function SettingsPage() {
     .map((account) => PROVIDER_NAMES[account.providerId] ?? account.providerId);
 
   return (
-    <div className="mx-auto max-w-2xl space-y-8">
+    <div className="mx-auto max-w-3xl space-y-10">
       <PageHeader title="Settings" subtitle={user.email} />
 
-      <Card title="Profile">
-        <ProfileForm name={user.name} email={user.email} />
-      </Card>
+      <div className="divide-y divide-iron-800 border-y border-iron-800">
+        <Section title="Profile" description="Your name shows on your dashboard and on reviews you share.">
+          <ProfileForm name={user.name} email={user.email} />
+        </Section>
 
-      <Card title="Password">
-        {hasPassword ? (
-          <PasswordForm />
-        ) : (
-          <p className="text-sm text-slate-400">
-            You sign in with {socialNames.join(" and ") || "a social account"}, so there&apos;s no password to change.
-          </p>
-        )}
-      </Card>
+        <Section title="Password" description="Changing it signs you out on your other devices.">
+          {hasPassword ? (
+            <PasswordForm />
+          ) : (
+            <p className="text-sm text-iron-400">
+              You sign in with {socialNames.join(" and ") || "a social account"}, so there&apos;s no password to change.
+            </p>
+          )}
+        </Section>
 
-      <Card title="Devices" description="Signed in on a shared or lost device? Sign it out from here.">
-        <SignOutEverywhere />
-      </Card>
+        <Section title="Devices" description="Signed in on a shared or lost device? Sign it out from here.">
+          <SignOutEverywhere />
+        </Section>
 
-      <Card title="Your data" description="Download every analysis we've stored for you, as JSON.">
-        <a href="/api/account/export" className={buttonClasses({ variant: "secondary" })} download>
-          <Download className="size-4" aria-hidden />
-          Download my data
-        </a>
-      </Card>
+        <Section title="Your data" description="Download every analysis we've stored for you, as JSON.">
+          <a href="/api/account/export" className={buttonClasses({ variant: "secondary" })} download>
+            <Download className="size-4" aria-hidden />
+            Download my data
+          </a>
+        </Section>
 
-      <Card
-        title="Delete account"
-        description="Permanently deletes your account and every analysis. This can't be undone."
-        tone="danger"
-      >
-        <DeleteAccount requirePassword={hasPassword} />
-      </Card>
+        <Section
+          title="Delete account"
+          description="Permanently deletes your account and every analysis. This can't be undone."
+          tone="danger"
+        >
+          <DeleteAccount requirePassword={hasPassword} />
+        </Section>
+      </div>
     </div>
   );
 }
 
-function Card({
+/** One settings group: title and description on the left, controls on the right. */
+function Section({
   title,
   description,
   tone,
@@ -71,16 +75,19 @@ function Card({
   children: React.ReactNode;
 }) {
   return (
-    <section
-      className={
-        tone === "danger"
-          ? "rounded-2xl border border-red-500/25 bg-red-500/5 p-5 sm:p-6"
-          : "rounded-2xl border border-white/10 bg-[var(--surface-card)] p-5 sm:p-6"
-      }
-    >
-      <h2 className="font-semibold text-white">{title}</h2>
-      {description && <p className="mt-1 text-sm text-slate-400">{description}</p>}
-      <div className="mt-5">{children}</div>
+    <section className="grid gap-5 py-8 md:grid-cols-[14rem_minmax(0,1fr)] md:gap-10">
+      <div>
+        <h2
+          className={cx(
+            "font-display text-xl leading-tight font-bold tracking-tight uppercase",
+            tone === "danger" ? "text-red-300" : "text-iron-50",
+          )}
+        >
+          {title}
+        </h2>
+        {description && <p className="mt-1 text-sm text-pretty text-iron-400">{description}</p>}
+      </div>
+      <div className="min-w-0">{children}</div>
     </section>
   );
 }

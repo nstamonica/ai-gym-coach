@@ -34,13 +34,16 @@ export default async function AnalysisPage({ params }: { params: Promise<{ id: s
 
   return (
     <div className="space-y-6">
-      <Link href="/history" className="inline-flex items-center gap-1 text-sm font-medium text-slate-400 hover:text-white">
+      <Link
+        href="/history"
+        className="inline-flex items-center gap-1 rounded-sm text-sm font-semibold text-iron-400 transition hover:text-iron-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-iron-100"
+      >
         <ChevronLeft className="size-4" aria-hidden />
         History
       </Link>
 
       <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_18rem]">
-        <article className="rounded-2xl border border-white/10 bg-[var(--surface-card)] p-5 sm:p-8">
+        <article className="rounded-lg border border-iron-800 bg-iron-900 p-5 sm:p-8">
           <AnalysisReport
             analysis={analysis}
             previous={previous}
@@ -51,7 +54,7 @@ export default async function AnalysisPage({ params }: { params: Promise<{ id: s
                   id={analysis.id}
                   hasThumbnail
                   alt={`Frame from ${analysis.videoName}`}
-                  className="aspect-video w-full rounded-xl"
+                  className="aspect-video w-full rounded-md"
                 />
               )
             }
@@ -59,26 +62,26 @@ export default async function AnalysisPage({ params }: { params: Promise<{ id: s
         </article>
 
         <aside className="space-y-4">
-          <section className="rounded-2xl border border-white/10 bg-[var(--surface-card)] p-5">
-            <h2 className="text-sm font-semibold text-white">Details</h2>
-            <dl className="mt-3 space-y-2.5 text-sm">
-              <div>
-                <dt className="text-slate-400">Analyzed</dt>
-                <dd className="text-slate-200">
+          <section className="rounded-lg border border-iron-800 bg-iron-900 p-5">
+            <h2 className="label-caps text-iron-200">Details</h2>
+            <dl className="mt-2 divide-y divide-iron-800 text-sm">
+              <div className="flex items-baseline justify-between gap-4 py-2.5">
+                <dt className="shrink-0 text-iron-400">Analyzed</dt>
+                <dd className="text-right text-iron-200">
                   <LocalDate iso={analysis.createdAt} format="datetime" />
                 </dd>
               </div>
-              <div>
-                <dt className="text-slate-400">Video</dt>
-                <dd className="truncate text-slate-200">
+              <div className="flex items-baseline justify-between gap-4 py-2.5">
+                <dt className="shrink-0 text-iron-400">Video</dt>
+                <dd className="min-w-0 truncate text-right text-iron-200" title={analysis.videoName}>
                   {analysis.videoName}
                   {analysis.videoSeconds ? ` · ${Math.round(analysis.videoSeconds)} s` : ""}
                 </dd>
               </div>
               {analysis.model && (
-                <div>
-                  <dt className="text-slate-400">Model</dt>
-                  <dd className="text-slate-200">{analysis.model}</dd>
+                <div className="flex items-baseline justify-between gap-4 py-2.5">
+                  <dt className="shrink-0 text-iron-400">Model</dt>
+                  <dd className="min-w-0 truncate text-right text-iron-200">{analysis.model}</dd>
                 </div>
               )}
             </dl>

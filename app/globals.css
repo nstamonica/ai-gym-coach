@@ -1,31 +1,110 @@
 @import "tailwindcss";
 
+/* Design system: "chalk and iron", a coach's training log.
+   - Warm near-black surfaces ("iron") with chalk-white text.
+   - Barlow for reading; Barlow Condensed for display type (headlines, numbers, grades).
+   - Color is reserved for meaning: the A-F grade scale, safety warnings and success.
+     Everything else, including primary actions, is chalk on iron. */
+
 @theme inline {
-  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-barlow), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-barlow-condensed), var(--font-barlow), ui-sans-serif, system-ui, sans-serif;
 }
 
-/* The app is dark by design. Chart tokens are validated against the card surface
-   (slate-900) with the dataviz palette validator. */
+@theme {
+  /* Text steps 100-400 all clear 4.5:1 on the card surface (iron-900). */
+  --color-iron-50: oklch(0.975 0.006 75);
+  --color-iron-100: oklch(0.945 0.008 75);
+  --color-iron-200: oklch(0.895 0.009 75);
+  --color-iron-300: oklch(0.81 0.011 75);
+  --color-iron-400: oklch(0.7 0.012 75);
+  --color-iron-500: oklch(0.6 0.012 75);
+  --color-iron-600: oklch(0.46 0.011 75);
+  --color-iron-700: oklch(0.365 0.01 75);
+  --color-iron-800: oklch(0.29 0.008 75);
+  --color-iron-900: oklch(0.215 0.006 75);
+  --color-iron-950: oklch(0.165 0.005 75);
+
+  /* The one authored moment: a new grade lands like a stamp (expo ease-out, visible throughout). */
+  --animate-grade-stamp: grade-stamp 650ms cubic-bezier(0.16, 1, 0.3, 1);
+
+  @keyframes grade-stamp {
+    from {
+      transform: scale(1.3) rotate(-6deg);
+    }
+    to {
+      transform: none;
+    }
+  }
+}
+
+/* Tokens read by CSS and SVG directly (raw values, so they never depend on which
+   utilities happen to be in use). */
 :root {
   color-scheme: dark;
-  --surface-page: #020617; /* slate-950 */
-  --surface-card: #0f172a; /* slate-900 */
-  --chart-series: #3987e5;
-  --chart-grid: #1e293b; /* slate-800: one step off the card */
-  --chart-axis: #334155; /* slate-700 */
-  --chart-text: #94a3b8; /* slate-400 */
+  --surface-page: oklch(0.165 0.005 75); /* iron-950 */
+  --surface-card: oklch(0.215 0.006 75); /* iron-900 */
+  --ink: oklch(0.945 0.008 75); /* iron-100, "chalk" */
+
+  /* The grade scale, A (excellent) to F (unsafe). Near-black ink reads on every fill. */
+  --grade-a: oklch(0.765 0.177 163.2);
+  --grade-b: oklch(0.897 0.196 126.7);
+  --grade-c: oklch(0.879 0.169 91.6);
+  --grade-d: oklch(0.75 0.183 55.9);
+  --grade-f: oklch(0.704 0.191 22.2);
+
+  /* Progress chart: a neutral line so the grade-colored markers carry the color. */
+  --chart-line: oklch(0.6 0.012 75); /* iron-500, 4:1 on the card */
+  --chart-grid: oklch(0.29 0.008 75); /* iron-800 */
+  --chart-axis: oklch(0.46 0.011 75); /* iron-600 */
+  --chart-text: oklch(0.7 0.012 75); /* iron-400 */
 }
 
 body {
-  background: var(--surface-page);
-  color: var(--color-slate-100);
+  background-color: var(--surface-page);
+  /* A faint chalk-dust grain, so large dark areas don't look flat. */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0.06 0 0 0 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  color: var(--ink);
 }
 
-/* A soft glow behind the top of every page. */
-.page-glow {
-  background:
-    radial-gradient(60rem 30rem at 15% -10%, rgb(37 99 235 / 0.14), transparent 60%),
-    radial-gradient(50rem 26rem at 90% -5%, rgb(16 185 129 / 0.1), transparent 60%);
+/* Browser surfaces carry the palette too: selection, caret, scrollbars and autofill. */
+html {
+  scrollbar-color: oklch(0.365 0.01 75) transparent; /* iron-700 */
+}
+
+body {
+  caret-color: var(--ink);
+}
+
+/* No one-word last lines in running text. */
+p,
+dd,
+li,
+figcaption {
+  text-wrap: pretty;
+}
+
+::selection {
+  background: var(--ink);
+  color: var(--surface-page);
+}
+
+input:-webkit-autofill,
+textarea:-webkit-autofill {
+  -webkit-text-fill-color: var(--ink);
+  caret-color: var(--ink);
+  box-shadow: 0 0 0 1000px var(--surface-page) inset;
+  transition: background-color 9999s ease-out;
+}
+
+/* Small uppercase labels: section titles, table headers, eyebrows. */
+@utility label-caps {
+  font-family: var(--font-barlow-condensed), var(--font-barlow), ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  line-height: 1.25rem;
+  text-transform: uppercase;
 }
 
 @media (prefers-reduced-motion: reduce) {
