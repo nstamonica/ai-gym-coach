@@ -3,6 +3,11 @@ export const MAX_FILE_MB = 100;
 export const MAX_FILE_BYTES = MAX_FILE_MB * 1024 * 1024;
 export const MAX_DURATION_SEC = 90;
 
+// A small JPEG frame saved with each analysis so the history has something to show
+// after the video itself is deleted.
+export const THUMBNAIL_MAX_SIDE = 640;
+export const THUMBNAIL_MAX_BYTES = 150 * 1024;
+
 // Video MIME types the Gemini API accepts.
 const GEMINI_VIDEO_TYPES = new Set([
   "video/mp4",

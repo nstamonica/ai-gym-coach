@@ -4,11 +4,36 @@
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
 }
 
+/* The app is dark by design. Chart tokens are validated against the card surface
+   (slate-900) with the dataviz palette validator. */
 :root {
   color-scheme: dark;
+  --surface-page: #020617; /* slate-950 */
+  --surface-card: #0f172a; /* slate-900 */
+  --chart-series: #3987e5;
+  --chart-grid: #1e293b; /* slate-800: one step off the card */
+  --chart-axis: #334155; /* slate-700 */
+  --chart-text: #94a3b8; /* slate-400 */
 }
 
 body {
-  background: var(--color-slate-950);
+  background: var(--surface-page);
   color: var(--color-slate-100);
+}
+
+/* A soft glow behind the top of every page. */
+.page-glow {
+  background:
+    radial-gradient(60rem 30rem at 15% -10%, rgb(37 99 235 / 0.14), transparent 60%),
+    radial-gradient(50rem 26rem at 90% -5%, rgb(16 185 129 / 0.1), transparent 60%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
