@@ -31,11 +31,11 @@ export function AnalysisReport({
   const Heading = headingLevel;
   // Section headings sit one level below the title, so the outline never skips a level.
   const SubHeading = headingLevel === "h1" ? "h2" : "h3";
-  // "Back squat · Excellent form": the lift it's tracked under (when the model's name
-  // differs from it) and what the grade means.
+  // "Back squat · Form: needs work": the lift it's tracked under (when the model's name
+  // differs from it) and what the grade means. ("Needs work form" didn't read.)
   const meta = [
     analysis.exercise && analysis.exercise.toLowerCase() !== analysis.exerciseLabel.toLowerCase() ? analysis.exerciseLabel : null,
-    analysis.grade ? `${GRADE_LABELS[analysis.grade]} form` : null,
+    analysis.grade ? `Form: ${GRADE_LABELS[analysis.grade].toLowerCase()}` : null,
   ]
     .filter(Boolean)
     .join(" · ");
