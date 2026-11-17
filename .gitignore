@@ -49,6 +49,5 @@ next-env.d.ts
 /playwright-report/
 /playwright/.cache/
 
-# Local agent tooling: personal settings and downloaded binaries
-/.claude/settings.local.json
-/.claude/skills/*/scripts/bin/
+# Local AI tooling (Claude Code skills and settings), not part of the app
+/.claude/
