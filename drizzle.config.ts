@@ -6,6 +6,14 @@ loadEnvConfig(process.cwd());
 
 const url = process.env.DATABASE_URL;
 
+// On Vercel, falling back to the embedded database would fail with a confusing
+// "mkdir .data/pglite" error, so say what's actually missing.
+if (!url && process.env.VERCEL) {
+  throw new Error(
+    "DATABASE_URL is not set. Add your Postgres connection string in Vercel: Project → Settings → Environment Variables, then redeploy.",
+  );
+}
+
 export default defineConfig({
   dialect: "postgresql",
   schema: "./lib/server/db/schema.ts",

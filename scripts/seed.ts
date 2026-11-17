@@ -6,7 +6,8 @@
 // With the embedded database (no DATABASE_URL), stop `npm run dev` first: only
 // one process can open it at a time. Re-running replaces the demo account.
 // `--fresh` deletes the embedded database first (used by the end-to-end tests).
-import { rmSync } from "node:fs";
+import { mkdirSync, rmSync } from "node:fs";
+import path from "node:path";
 import { PGlite } from "@electric-sql/pglite";
 import { loadEnvConfig } from "@next/env";
 import { hashPassword } from "better-auth/crypto";
@@ -239,6 +240,7 @@ async function connect(): Promise<{ db: Database; close: () => Promise<void> }> 
   }
   const dataDir = process.env.PGLITE_DATA_DIR ?? ".data/pglite";
   if (process.argv.includes("--fresh")) rmSync(dataDir, { recursive: true, force: true });
+  mkdirSync(path.dirname(dataDir), { recursive: true }); // a fresh checkout (e.g. CI) has no .data folder yet
   const client = new PGlite(dataDir);
   const local = drizzlePglite(client, { schema });
   await migrate(local, { migrationsFolder: "drizzle" });
