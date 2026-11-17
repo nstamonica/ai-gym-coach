@@ -11,7 +11,7 @@
 ![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178c6?logo=typescript&logoColor=white)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Drizzle-336791?logo=postgresql&logoColor=white)
 
-**[Try it live → ai-gym-coach-gamma.vercel.app](https://ai-gym-coach-gamma.vercel.app)**
+**[Try it live → ai-personal-trainer-ns.vercel.app](https://ai-personal-trainer-ns.vercel.app)**
 
 </div>
 
