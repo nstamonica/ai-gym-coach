@@ -11,7 +11,7 @@
 ![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178c6?logo=typescript&logoColor=white)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Drizzle-336791?logo=postgresql&logoColor=white)
 
-<!-- Add the live URL here once deployed, e.g. **[Live demo](https://your-app.vercel.app)** -->
+**[Try it live → ai-gym-coach-gamma.vercel.app](https://ai-gym-coach-gamma.vercel.app)**
 
 </div>
 
